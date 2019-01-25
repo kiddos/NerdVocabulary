@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_home"
+            android:icon="@drawable/ic_chrome_reader_mode_24dp"
+            android:title="@string/title_review"/>
+
+    <item
+            android:id="@+id/navigation_dashboard"
+            android:icon="@drawable/ic_assignment_24dp"
+            android:title="@string/title_add_word"/>
+
+    <item
+            android:id="@+id/navigation_notifications"
+            android:icon="@drawable/ic_assessment_24dp"
+            android:title="@string/title_quiz"/>
+
+</menu>

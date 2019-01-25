@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Nerd Vocabulary</string>
+    <string name="title_review">Review</string>
+    <string name="title_add_word">Add Word</string>
+    <string name="title_quiz">Quiz</string>
+    <string name="title_setting">Quiz</string>
+
+    <string name="work_in_progress">Word in Progress</string>
+
+    <string name="list_view_emty">No Vocabulary</string>
+    <string name="hint_word">New Word</string>
+    <string name="title_new_word">Add a New Word</string>
+    <string name="hint_word_definition">Word Definition</string>
+    <string name="hint_word_in_sentence">Word in a Sentence</string>
+    <string name="hint_word_type">Word Type</string>
+    <string name="btn_add_word">Add New Word</string>
+
+    <string name="prompt_add_word_success">Word Successfully Added</string>
+    <string name="prompt_add_word_fail">Invalid Word/Definition</string>
+    <string name="button_next">Next</string>
+    <string name="empty_quiz">Not enough words</string>
+
+    <string name="correct_answer">Correct</string>
+    <string name="incorrect_answer">Incorrect</string>
+    <string name="choose_answer">Choose The Answer</string>
+</resources>
