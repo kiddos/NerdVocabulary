@@ -7,12 +7,14 @@ import re
 from bs4 import BeautifulSoup
 
 
+OUTPUT = 'gre01.txt'
+
 URL = 'https://gre.economist.com/gre-advice/gre-vocabulary/which-words-study/most-common-gre-vocabulary-list-organized-difficulty'
 r = requests.get(URL)
 soup = BeautifulSoup(r.text)
 
 
-with open('word-set-01.txt', 'w') as f:
+with open('gre01.txt', 'w') as f:
   for item in soup.select('.article-body p'):
     text = item.get_text(strip=True)
     word_pattern = re.compile(r'^(\w+): ')
