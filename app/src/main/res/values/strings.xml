@@ -23,4 +23,6 @@
     <string name="correct_answer">Correct</string>
     <string name="incorrect_answer">Incorrect</string>
     <string name="choose_answer">Choose The Answer</string>
+
+    <string name="my_words">My Words</string>
 </resources>
