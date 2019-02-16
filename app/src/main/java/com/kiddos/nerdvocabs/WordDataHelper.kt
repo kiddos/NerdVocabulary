@@ -143,10 +143,13 @@ class WordDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         val entries = content.split("\n\n")
         val words = ArrayList<Word>()
+        var id = 1L
         for (e in entries) {
 
             val wordData = e.split("\n")
             val w = Word()
+            w.wordId = id;
+            id += 1;
             w.word = wordData[0]
             w.wordType = wordData[1]
             w.definition = wordData[2]

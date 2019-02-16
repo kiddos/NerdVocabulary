@@ -4,6 +4,7 @@ package com.kiddos.nerdvocabs
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,19 +83,19 @@ class ReviewFragment : Fragment() {
             var view: View? = convertView
             if (view == null) {
                 view = this.inflater.inflate(R.layout.word_item, parent, false)
-
-                val word = view?.findViewById(R.id.tvWord) as TextView
-                word.text = words[position].word
-
-                val wordType = view?.findViewById(R.id.tvWordType) as TextView
-                wordType.text = words[position].wordType
-
-                val wordDef = view?.findViewById(R.id.tvDefinition) as TextView
-                wordDef.text = words[position].definition
-
-                val sentence = view?.findViewById(R.id.tvSentence) as TextView
-                sentence.text = words[position].sentence
             }
+
+            val word = view?.findViewById(R.id.tvWord) as TextView
+            word.text = words[position].word
+
+            val wordType = view?.findViewById(R.id.tvWordType) as TextView
+            wordType.text = words[position].wordType
+
+            val wordDef = view?.findViewById(R.id.tvDefinition) as TextView
+            wordDef.text = words[position].definition
+
+            val sentence = view?.findViewById(R.id.tvSentence) as TextView
+            sentence.text = words[position].sentence
             return view!!
         }
     }
