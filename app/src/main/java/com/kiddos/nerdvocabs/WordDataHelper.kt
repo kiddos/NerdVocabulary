@@ -6,7 +6,7 @@ import android.content.res.AssetManager
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import kotlin.random.Random
+import java.util.Random
 
 class Word {
     var wordId: Long = 0
@@ -46,6 +46,7 @@ class WordDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             "DROP TABLE IF EXISTS $TABLE_NAME"
 
     private var assetManager: AssetManager  = context.assets
+    private val rand: Random = Random(System.currentTimeMillis())
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_TABLE)
@@ -112,14 +113,14 @@ class WordDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
     }
 
-    fun getWords(): MutableList<Word> {
+    fun getWords(): ArrayList<Word> {
         val db = this.readableDatabase
         val projection = arrayOf(BaseColumns._ID, COLUMN_NAME_WORD,
             COLUMN_NAME_WORD_TYPE, COLUMN_NAME_WORD_DEFINITION, COLUMN_NAME_WORD_IN_SENTENCE)
         var cursor = db.query(TABLE_NAME, projection, null, null, null, null, null)
 
 
-        val words = mutableListOf<Word>()
+        val words = ArrayList<Word>()
         with (cursor) {
             while (moveToNext()) {
                 val w = Word()
@@ -134,8 +135,8 @@ class WordDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return words
     }
 
-    fun loadFromAssets(): ArrayList<Word> {
-        val inputs = this.assetManager.open("word-set-01.txt")
+    fun loadFromAsset(asset: String) : ArrayList<Word> {
+        val inputs = this.assetManager.open(asset)
         val reader = inputs.bufferedReader()
         val lines = reader.readLines()
         var content = lines.joinToString("\n")
@@ -157,27 +158,33 @@ class WordDataHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return words
     }
 
-    fun getQuestion(): Question? {
-        var words = getWords()
-        if (words.size < 4) {
-            words = loadFromAssets()
+    fun loadFromAssets(): ArrayList<Word> {
+        val outputs = ArrayList<Word>()
+        val assets = arrayOf("gre01.txt", "toefl01.txt")
+        for (a : String in assets) {
+            val words = loadFromAsset(a)
+            outputs.addAll(words)
         }
+        return outputs
+    }
 
+    fun getQuestion(words : MutableList<Word>): Question? {
         if (words.size > 3) {
-            val wordIndex = Random.nextInt(words.size - 1)
+            val wordIndex = rand.nextInt(words.size)
             val q = Question()
             q.word = words[wordIndex].word
 
             val added = ArrayList<Int>()
-            for (i in 0..3) {
-                var choiceIndex = Random.nextInt(words.size - 1);
+            added.add(wordIndex)
+            for (i in 0..2) {
+                var choiceIndex = rand.nextInt(words.size);
                 while (added.contains(choiceIndex))
-                    choiceIndex = Random.nextInt(words.size - 1);
+                    choiceIndex = rand.nextInt(words.size);
 
-                q.choices.add(words[i].definition)
+                q.choices.add(words[choiceIndex].definition)
                 added.add(choiceIndex)
             }
-            q.answer = Random.nextInt(3)
+            q.answer = rand.nextInt(4)
             q.choices.add(q.answer, words[wordIndex].definition)
 
             return q
