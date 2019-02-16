@@ -4,13 +4,10 @@ package com.kiddos.nerdvocabs
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 
 
 /**
@@ -19,18 +16,50 @@ import android.widget.TextView
  *
  */
 class ReviewFragment : Fragment() {
+    private lateinit var helper : WordDataHelper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_review, container, false)
         val wordList = rootView.findViewById<ListView>(R.id.lvReviewVocabs)
         wordList.emptyView = rootView.findViewById(R.id.tvReviewEmpty)
 
-        Log.d("review fragment", "on create")
-        val helper = WordDataHelper(context!!)
-        val words = helper.getWords()
-
-        val content = rootView.findViewById(R.id.lvReviewVocabs) as ListView
-        content.adapter = WordAdapter(this.context!!, words)
+        helper = WordDataHelper(context!!)
+        initCollection(rootView)
+        initReview(rootView)
         return rootView
+    }
+
+    private fun initCollection(rootView: View) {
+        val assets = context!!.assets.list("")
+        val collection = ArrayList<String>()
+        collection.add(resources.getString(R.string.my_words))
+        for (a : String in assets) {
+            if (a.endsWith(".txt")) {
+                collection.add(a)
+            }
+        }
+
+        val spinner = rootView.findViewById<Spinner>(R.id.spCollection)
+        spinner.adapter = ArrayAdapter<String>(context!!,
+            android.R.layout.simple_spinner_dropdown_item, collection)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                initReview(rootView)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun initReview(rootView: View) {
+        val selected = rootView.findViewById<Spinner>(R.id.spCollection).selectedItem.toString()
+        if (selected.equals(resources.getString(R.string.my_words))) {
+            val words = helper.getWords()
+            val content = rootView.findViewById(R.id.lvReviewVocabs) as ListView
+            content.adapter = WordAdapter(this.context!!, words)
+        } else {
+            val words = helper.loadFromAsset(selected)
+            val content = rootView.findViewById(R.id.lvReviewVocabs) as ListView
+            content.adapter = WordAdapter(this.context!!, words)
+        }
     }
 
     inner class WordAdapter(context: Context, words: MutableList<Word>) : BaseAdapter() {
